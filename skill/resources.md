@@ -23,6 +23,35 @@ Essential documentation, tools, and references for Ethereum development.
 | ConnectKit | https://docs.family.co/connectkit | Alternative wallet UI |
 | Web3Modal | https://docs.walletconnect.com/web3modal | WalletConnect's modal |
 
+### Account Abstraction (ERC-4337)
+
+| Resource | URL | Description |
+|----------|-----|-------------|
+| Permissionless.js | https://docs.pimlico.io/permissionless | TypeScript AA library |
+| Safe Smart Account | https://docs.safe.global | Production smart accounts |
+| ERC-4337 Spec | https://eips.ethereum.org/EIPS/eip-4337 | Official specification |
+| Pimlico | https://pimlico.io | Bundler and paymaster |
+| Alchemy AA | https://www.alchemy.com/account-abstraction | AA infrastructure |
+
+### Layer 2 Networks
+
+| Resource | URL | Description |
+|----------|-----|-------------|
+| Optimism Docs | https://docs.optimism.io | OP Stack documentation |
+| Base Docs | https://docs.base.org | Base L2 documentation |
+| Arbitrum Docs | https://docs.arbitrum.io | Arbitrum documentation |
+| zkSync Docs | https://docs.zksync.io | zkSync Era documentation |
+| L2Beat | https://l2beat.com | L2 comparison and analysis |
+
+### Upgradeable Contracts
+
+| Resource | URL | Description |
+|----------|-----|-------------|
+| OZ Upgrades | https://docs.openzeppelin.com/upgrades-plugins/1.x/ | Upgrade plugin docs |
+| Proxy Patterns | https://docs.openzeppelin.com/contracts/5.x/api/proxy | Proxy API reference |
+| ERC-1967 | https://eips.ethereum.org/EIPS/eip-1967 | Proxy storage slots |
+| ERC-7201 | https://eips.ethereum.org/EIPS/eip-7201 | Namespaced storage |
+
 ### Standards
 
 | EIP | URL | Description |

@@ -198,7 +198,83 @@ contract PriceConsumer {
 }
 ```
 
-### 6. Denial of Service (DoS)
+### 6. Flash Loan Attacks
+
+**The Problem:** Attackers borrow massive amounts instantly (no collateral) to manipulate prices, drain funds, or exploit logic that assumes users have limited capital.
+
+**How Flash Loans Work:**
+```solidity
+// Attacker in a single transaction:
+// 1. Borrow $100M from Aave/dYdX
+// 2. Manipulate a price oracle
+// 3. Exploit a protocol using that oracle
+// 4. Repay the $100M + tiny fee
+// 5. Profit
+```
+
+**Vulnerable Code:**
+```solidity
+// BAD - Uses spot price that can be manipulated
+function getCollateralValue(address user) public view returns (uint256) {
+    uint256 tokenBalance = balanceOf(user);
+    uint256 price = uniswapPair.getReserves()[0] / uniswapPair.getReserves()[1];
+    return tokenBalance * price;
+}
+
+// BAD - Assumes users can't have massive balances
+function vote(uint256 proposalId) external {
+    uint256 votingPower = token.balanceOf(msg.sender);
+    proposals[proposalId].votes += votingPower;
+}
+```
+
+**Mitigations:**
+
+```solidity
+// 1. Use time-weighted prices (TWAP) or Chainlink
+import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+
+function getPrice() internal view returns (uint256) {
+    (, int256 price,, uint256 updatedAt,) = priceFeed.latestRoundData();
+    require(block.timestamp - updatedAt < 1 hours, "Stale price");
+    return uint256(price);
+}
+
+// 2. Snapshot voting power (prevents flash loan governance attacks)
+function vote(uint256 proposalId) external {
+    uint256 snapshotBlock = proposals[proposalId].snapshotBlock;
+    uint256 votingPower = token.getPastVotes(msg.sender, snapshotBlock);
+    proposals[proposalId].votes += votingPower;
+}
+
+// 3. Delay sensitive operations
+mapping(address => uint256) public lastDeposit;
+
+function withdraw() external {
+    require(block.timestamp >= lastDeposit[msg.sender] + 1, "Same block");
+    // ... withdraw logic
+}
+
+// 4. Compare against previous block
+function swap() external {
+    uint256 currentPrice = getPrice();
+    uint256 previousPrice = getPriceAtBlock(block.number - 1);
+    require(
+        currentPrice * 100 / previousPrice > 95 &&
+        currentPrice * 100 / previousPrice < 105,
+        "Price deviation too high"
+    );
+}
+```
+
+**Key Defenses:**
+- Use Chainlink or TWAP instead of spot prices
+- Snapshot token balances for governance
+- Add same-block restrictions for sensitive operations
+- Implement price deviation checks
+- Consider using `block.number` checks
+
+### 7. Denial of Service (DoS)
 
 **The Problem:** Contract becomes unusable due to unbounded operations or griefing.
 
@@ -235,7 +311,7 @@ function withdraw() external {
 }
 ```
 
-### 7. Signature Replay
+### 8. Signature Replay
 
 **The Problem:** Signatures can be reused across different contexts.
 
@@ -280,7 +356,7 @@ function executeWithSignature(
 }
 ```
 
-### 8. Unsafe External Calls
+### 9. Unsafe External Calls
 
 **The Problem:** Low-level calls don't revert on failure.
 
