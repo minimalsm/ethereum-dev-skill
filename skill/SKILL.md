@@ -13,9 +13,12 @@ End-to-end playbook for modern Ethereum development as of 2025. This skill provi
 - Building React/Next.js frontends that interact with Ethereum
 - Writing Solidity smart contracts
 - Testing contracts with Foundry or Hardhat
-- Deploying to mainnet or testnets
+- Deploying to mainnet, testnets, or L2 networks
 - Security review of smart contract code
 - Integrating payment flows with ERC-20 tokens
+- Implementing account abstraction (ERC-4337)
+- Building upgradeable contracts with proxies
+- Deploying to Layer 2 networks (Base, Optimism, Arbitrum)
 
 ## Core Stack Preferences
 
@@ -40,6 +43,9 @@ End-to-end playbook for modern Ethereum development as of 2025. This skill provi
 | Local Node | Anvil | Hardhat Network | smart-contracts-foundry.md |
 | Security | OpenZeppelin 5.0 | - | security.md |
 | Payments | ERC-20 (USDC) | Native ETH | payments.md |
+| Account Abstraction | ERC-4337 | - | account-abstraction.md |
+| Upgrades | UUPS Proxy | Transparent, Beacon | upgrades.md |
+| L2 Deployment | Base, Optimism | Arbitrum, zkSync | layer2.md |
 
 ## Execution Framework
 
@@ -67,6 +73,9 @@ Load the relevant specialized file and follow its patterns:
 - `testing.md` - Test patterns, fuzzing, invariants
 - `security.md` - Vulnerability checks, best practices
 - `payments.md` - Token integration, payment flows
+- `account-abstraction.md` - ERC-4337, smart accounts, gasless transactions
+- `upgrades.md` - Proxy patterns, UUPS, storage layout
+- `layer2.md` - L2 deployment, cross-chain messaging
 
 ### 4. Test
 For smart contracts, always include:
